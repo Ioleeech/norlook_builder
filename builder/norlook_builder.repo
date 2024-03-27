@@ -1,0 +1,7 @@
+[norlook_builder]
+name=Norlook - Builder
+baseurl=
+enabled=1
+gpgcheck=0
+sslverify=0
+metadata_expire=15
