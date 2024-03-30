@@ -1,25 +1,39 @@
 #!/usr/bin/env bash
 
+# Path on the host where cross-platform compilling tools are placed
 TOOLCHAIN_ROOT="/opt/norlook_toolchain"
+
+# Arch of the host
 TOOLCHAIN_ARCH="x86_64"
-TOOLCHAIN_TARGET="${TOOLCHAIN_ARCH}-norlook-linux-gnu"
-TOOLCHAIN_TARGET_ARCH="core2"
+
+# Template of repo-file for repository with cross-platform compilling tools
 TOOLCHAIN_REPO_FILE="norlook_builder.repo"
 
+# Arch of the target
+TOOLCHAIN_TARGET_ARCH="core2"
+TOOLCHAIN_TARGET_NORMALIZED_ARCH="x86_64"
+
+# Target name
+TOOLCHAIN_TARGET="${TOOLCHAIN_TARGET_NORMALIZED_ARCH}-norlook-linux-gnu"
+
+# Common variables for packages building
 BUILDER_VER=$(date "+%Y%m%d%H%M%S")
+BUILDER_DIST="$(/usr/bin/rpm --eval '%{dist}')"
+
 BUILDER_ROOT=$(pwd)
 BUILDER_TARBALLS="${BUILDER_ROOT}/_tarballs_"
 BUILDER_REPO_DIR="${BUILDER_ROOT}/_repo_"
 BUILDER_BUILD_DIR="${BUILDER_ROOT}/_build_"
 
+# Package-specific parameters
+PACKAGE_RPM_ROOT=""
+PACKAGE_RPM_SPEC=""
+
 # PACKAGE_VER is reserved for using with package.env files
 # PACKAGE_URL is reserved for using with package.env files
 # PACKAGE_SUM is reserved for using with package.env files
 
-PACKAGE_RPM_DIST="$(/usr/bin/rpm --eval '%{dist}')"
-PACKAGE_RPM_ROOT=""
-PACKAGE_RPM_SPEC=""
-
+# Error message
 CMD_ERROR=""
 
 prepare_building_tree()
@@ -168,6 +182,7 @@ build_package()
              --define "_norlook_toolchain ${TOOLCHAIN_ROOT}" \
              --define "_norlook_target ${TOOLCHAIN_TARGET}" \
              --define "_norlook_arch ${TOOLCHAIN_TARGET_ARCH}" \
+             --define "_kernel_arch ${TOOLCHAIN_TARGET_NORMALIZED_ARCH}" \
              -bb "${PACKAGE_RPM_SPEC}"
 
     mv -fv "${PACKAGE_RPM_ROOT}/RPMS/${TOOLCHAIN_ARCH}"/*.rpm "${BUILDER_REPO_DIR}/${TOOLCHAIN_ARCH}/"
@@ -179,3 +194,4 @@ build_package "libgmp"
 build_package "libmpfr"
 build_package "libmpc"
 build_package "gcc-initial"
+build_package "linux-headers"
