@@ -105,4 +105,4 @@ Norlook toolchain - GNU Binutils package
 
 %files
 %defattr(-,root,root)
-/opt/norlook_toolchain/*
+%{_norlook_toolchain}/*

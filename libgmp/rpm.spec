@@ -79,4 +79,4 @@ Norlook toolchain - GNU MP package
 
 %files
 %defattr(-,root,root)
-/opt/norlook_toolchain/*
+%{_norlook_toolchain}/*

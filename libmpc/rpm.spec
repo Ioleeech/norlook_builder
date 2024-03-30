@@ -87,4 +87,4 @@ Norlook toolchain - GNU MPC package
 
 %files
 %defattr(-,root,root)
-/opt/norlook_toolchain/*
+%{_norlook_toolchain}/*

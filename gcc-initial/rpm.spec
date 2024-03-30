@@ -132,4 +132,4 @@ Norlook toolchain - GCC package (required to compile target C library only)
 
 %files
 %defattr(-,root,root)
-/opt/norlook_toolchain/*
+%{_norlook_toolchain}/*
