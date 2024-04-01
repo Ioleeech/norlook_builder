@@ -20,6 +20,20 @@ BuildRequires:  gcc
 # Sources preparing stage
 # ----------------------------------------------------------------------------
 %prep
+# Check the version
+export SRC_VERSION="%{package_version}"
+export SRC_VERSION_1="${SRC_VERSION%.*}"
+export SRC_VERSION_2="${SRC_VERSION#*.}"
+
+export SRC_MAJOR="${SRC_VERSION_1%.*}"
+export SRC_MIDDLE="${SRC_VERSION_1#*.}"
+export SRC_MINOR="${SRC_VERSION_2#*.}"
+
+[[ "X${SRC_MAJOR}.${SRC_MIDDLE}" != "X%{_kernel_version}" ]] && \
+  echo "Norlook builder requires linux kernel version %{_kernel_version}" && \
+  echo "But %{package_name} package provides version %{package_version}" && \
+  false
+
 # Cleanup sources and unpack tarball
 rm -fr %{package_name}-%{package_version}
 tar -xf %{_sourcedir}/%{package_name}-%{package_version}.tar.xz
@@ -49,11 +63,11 @@ true
 # Install headers
 make -C %{package_name}-%{package_version} \
   ARCH="%{_kernel_arch}" \
-  INSTALL_HDR_PATH="%{buildroot}/%{_norlook_toolchain}/%{_norlook_target}/sysroot/usr" \
+  INSTALL_HDR_PATH="%{buildroot}/%{_norlook_toolchain}/%{_norlook_target}/" \
   headers_install
 
 # Remove ".install" and "..install.cmd" files
-rm -fv $(find %{buildroot}/%{_norlook_toolchain}/%{_norlook_target}/sysroot/usr/ -name *.install*)
+rm -fv $(find %{buildroot}/%{_norlook_toolchain}/%{_norlook_target}/ -name *.install*)
 
 # ----------------------------------------------------------------------------
 # RPM package description

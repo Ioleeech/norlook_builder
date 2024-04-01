@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Toolchain name and home address
+TOOLCHAIN_NAME="norlook"
+TOOLCHAIN_URL="https://github.com/ioleeech/norlook_builder"
+
 # Path on the host where cross-platform compilling tools are placed
 TOOLCHAIN_ROOT="/opt/norlook_toolchain"
 
@@ -12,6 +16,7 @@ TOOLCHAIN_REPO_FILE="norlook_builder.repo"
 # Arch of the target
 TOOLCHAIN_TARGET_ARCH="core2"
 TOOLCHAIN_TARGET_NORMALIZED_ARCH="x86_64"
+TOOLCHAIN_TARGET_LINUX_KERNEL="4.19"
 
 # Target name
 TOOLCHAIN_TARGET="${TOOLCHAIN_TARGET_NORMALIZED_ARCH}-norlook-linux-gnu"
@@ -179,9 +184,12 @@ build_package()
              --define "_topdir ${PACKAGE_RPM_ROOT}" \
              --define "_version ${PACKAGE_VER}" \
              --define "_release ${BUILDER_VER}" \
+             --define "_norlook_version ${TOOLCHAIN_NAME}" \
+             --define "_norlook_url ${TOOLCHAIN_URL}" \
              --define "_norlook_toolchain ${TOOLCHAIN_ROOT}" \
              --define "_norlook_target ${TOOLCHAIN_TARGET}" \
              --define "_norlook_arch ${TOOLCHAIN_TARGET_ARCH}" \
+             --define "_kernel_version ${TOOLCHAIN_TARGET_LINUX_KERNEL}" \
              --define "_kernel_arch ${TOOLCHAIN_TARGET_NORMALIZED_ARCH}" \
              -bb "${PACKAGE_RPM_SPEC}"
 
