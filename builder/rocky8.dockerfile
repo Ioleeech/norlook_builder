@@ -6,7 +6,7 @@ RUN dnf update -y && \
     yum-config-manager --enable devel      && \
     dnf update -y && \
     yum update -y && \
-    dnf install -y coreutils-single git wget rsync perl gcc gcc-c++ make cmake \
+    dnf install -y coreutils-single git wget rsync perl gcc gcc-c++ make cmake python3.11 \
                    zlib-devel zlib-static gmp-devel gmp-static mpfr-devel libmpc-devel \
                    which bc m4 bison gettext texinfo gawk gawk-devel ncurses ncurses-devel \
                    rpm-build mc && \
